@@ -3,6 +3,9 @@
 ### install dependencies
 - composer install
 
+### create .env file
+don't forget to create an .env file which includes your mysql credentials
+
 ### migrate db
 - php artisan migrate
 
