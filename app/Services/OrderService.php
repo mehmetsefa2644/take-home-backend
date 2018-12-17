@@ -18,7 +18,7 @@ class OrderService
             $fare = $order['payment_status']['amount_in_cents'];
             $product_name = $order['product']['title'];
 
-            if($order['payment_status']['refunded_at']) {
+            if($order['payment_status']['refunded_at']) { // refunded
                 $status = 'Refunded';
                 $time = $order['payment_status']['refunded_at'];
                 if(\App\Services\DateService::in_today($order['payment_status']['refunded_at'])) {
@@ -42,7 +42,7 @@ class OrderService
                 }
             }
             
-            if($order['payment_status']['paid_at']) {
+            if($order['payment_status']['paid_at']) { // paid
                 $status = 'Paid';
                 $time = $order['payment_status']['paid_at'];
                 if(\App\Services\DateService::in_today($order['payment_status']['paid_at'])) {
@@ -64,7 +64,7 @@ class OrderService
                     $result_order['time'] = $time;
                     array_push($this_month, $result_order);
                 }
-            } else if($order['payment_status']['declined_at']) {
+            } else if($order['payment_status']['declined_at']) { // declined
                 $status = 'Declined';
                 $time = $order['payment_status']['declined_at'];
                 if(\App\Services\DateService::in_today($order['payment_status']['declined_at'])) {
@@ -84,6 +84,24 @@ class OrderService
                     $result_order['fare'] = $fare;
                     $result_order['product_name'] = $product_name;
                     $result_order['time'] = $time;
+                    array_push($this_month, $result_order);
+                }
+            } else { // pending
+                $status = 'Pending';
+                if(\App\Services\DateService::in_today($order['payment_status']['updated_at'])) {
+                    $result_order['status'] = $status;
+                    $result_order['fare'] = $fare;
+                    $result_order['product_name'] = $product_name;
+                    array_push($today, $result_order);
+                } else if(\App\Services\DateService::in_week($order['payment_status']['updated_at'])) {
+                    $result_order['status'] = $status;
+                    $result_order['fare'] = $fare;
+                    $result_order['product_name'] = $product_name;
+                    array_push($this_week, $result_order);
+                } else if(\App\Services\DateService::in_month($order['payment_status']['updated_at'])) {
+                    $result_order['status'] = $status;
+                    $result_order['fare'] = $fare;
+                    $result_order['product_name'] = $product_name;
                     array_push($this_month, $result_order);
                 }
             }

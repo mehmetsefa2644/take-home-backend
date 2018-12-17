@@ -23,8 +23,8 @@ class DateService
         }
     }
     public static function in_week($date) {
-        Carbon::setWeekStartsAt(Carbon::MONDAY);
-        Carbon::setWeekEndsAt(Carbon::SUNDAY);
+        Carbon::setWeekStartsAt(Carbon::SUNDAY);
+        Carbon::setWeekEndsAt(Carbon::SATURDAY);
 
         $startDate = Carbon::now()->startOfWeek();
         $endDate = Carbon::now()->endOfWeek();
